@@ -14,12 +14,13 @@ import vinhnb.gvn.com.playmedia.model.entities.AudioEntity;
 import vinhnb.gvn.com.playmedia.model.entities.FileEntity;
 import vinhnb.gvn.com.playmedia.model.entities.ImageEntity;
 import vinhnb.gvn.com.playmedia.model.entities.VideoEntity;
+import vinhnb.gvn.com.playmedia.view.base.BasePresenter;
 
 public class ViewPageMediaAdapter extends FragmentStatePagerAdapter {
     private List<FileEntity> mData = new ArrayList<>();
     private CallbackDetailMediaViewViewPageAdapter mCallback;
 
-    SparseArray<Fragment> registeredFragments = new SparseArray<>();
+//    SparseArray<Fragment> registeredFragments = new SparseArray<>();
 
     private Context mContext;
 
@@ -44,7 +45,7 @@ public class ViewPageMediaAdapter extends FragmentStatePagerAdapter {
             return ImageFragment.newInstance(position);
 
         if (fileEntity instanceof AudioEntity)
-            return ImageFragment.newInstance(position);
+            return AudioFragment.newInstance(position);
 
         if (fileEntity instanceof VideoEntity)
             return VideoFragment.newInstance(position);
@@ -57,31 +58,30 @@ public class ViewPageMediaAdapter extends FragmentStatePagerAdapter {
         return mData.size();
     }
 
+//    @Override
+//    public Object instantiateItem(ViewGroup container, int position) {
+//        Fragment fragment = (Fragment) super.instantiateItem(container, position);
+//        registeredFragments.put(position, fragment);
+//        return fragment;
+//    }
+//
+//    @Override
+//    public void destroyItem(ViewGroup container, int position, Object object) {
+//        super.destroyItem(container, position, object);
+//        registeredFragments.remove(position);
+//        super.destroyItem(container, position, object);
+//    }
+//
+//    public Fragment getRegisteredFragment(int position) {
+//        return registeredFragments.get(position);
+//    }
 
-    @Override
-    public Object instantiateItem(ViewGroup container, int position) {
-        Fragment fragment = (Fragment) super.instantiateItem(container, position);
-        registeredFragments.put(position, fragment);
-        return fragment;
-    }
-
-    @Override
-    public void destroyItem(ViewGroup container, int position, Object object) {
-        super.destroyItem(container, position, object);
-        registeredFragments.remove(position);
-        super.destroyItem(container, position, object);
-    }
-
-    public Fragment getRegisteredFragment(int position) {
-        return registeredFragments.get(position);
-    }
-
-    public interface CallbackDetailMediaViewViewPageAdapter extends ViewPageMediaInteractor {
+    public interface CallbackDetailMediaViewViewPageAdapter
+//            extends ViewPageMediaInteractor
+    {
 
     }
 
 }
 
-interface ViewPageMediaInteractor {
-    FileEntity getItemMediaFilePreparePlay();
-}
+

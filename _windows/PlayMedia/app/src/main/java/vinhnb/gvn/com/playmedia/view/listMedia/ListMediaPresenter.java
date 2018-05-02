@@ -33,6 +33,11 @@ public class ListMediaPresenter extends BasePresenter implements ListMediaIntera
     public void saveListMedia(List<FileEntity> fileEntity) {
         mISdcardModel.saveListMedia(fileEntity);
     }
+
+    @Override
+    public void savePositionMedia(int position) {
+        mISdcardModel.savePositionMedia(position);
+    }
 }
 
 interface ListMediaInteractor {
@@ -48,6 +53,8 @@ interface ListMediaInteractor {
         void loadDataSdcard();
 
         void saveListMedia(List<FileEntity> fileEntity);
+
+        void savePositionMedia(int position);
     }
 }
 

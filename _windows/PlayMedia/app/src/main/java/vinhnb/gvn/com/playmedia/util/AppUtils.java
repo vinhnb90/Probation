@@ -2,16 +2,16 @@ package vinhnb.gvn.com.playmedia.util;
 
 import android.content.Context;
 
-public class MediaPlayAppUtils extends android.app.Application {
+public class AppUtils extends android.app.Application {
     /*
      * var
      * */
-    private static MediaPlayAppUtils sInstance;
+    private static AppUtils sInstance;
 
     /*
      * contructor
      * */
-    public MediaPlayAppUtils() {
+    public AppUtils() {
         sInstance = this;
     }
 

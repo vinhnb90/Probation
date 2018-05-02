@@ -8,7 +8,7 @@ import android.net.Uri;
 import java.io.File;
 import java.net.URLConnection;
 
-import vinhnb.gvn.com.playmedia.util.MediaPlayAppUtils;
+import vinhnb.gvn.com.playmedia.util.AppUtils;
 import vinhnb.gvn.com.playmedia.util.Utils;
 
 public class MediaFile {
@@ -31,7 +31,9 @@ public class MediaFile {
         }
 
         if (isAudioFile(file.getPath())) {
-            return new AudioEntity(file.getName(), file);
+            //get thumb
+//            Bitmap resized = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(file.getPath()), width, height);
+            return new AudioEntity(file.getName(), file, getThumbnailAudioFile(file));
         }
 
         return null;
@@ -52,12 +54,12 @@ public class MediaFile {
         return mimeType != null && mimeType.startsWith("audio");
     }
 
-    private Bitmap getThumbnailAudioFile(File file) {
+    private static Bitmap getThumbnailAudioFile(File file) {
         MediaMetadataRetriever mmr = new MediaMetadataRetriever();
         byte[] rawArt;
         BitmapFactory.Options bfo = new BitmapFactory.Options();
 
-        mmr.setDataSource(MediaPlayAppUtils.getContext(), Uri.fromFile(file));
+        mmr.setDataSource(AppUtils.getContext(), Uri.fromFile(file));
         rawArt = mmr.getEmbeddedPicture();
 
         // if rawArt is null then no cover art is embedded in the file or is not

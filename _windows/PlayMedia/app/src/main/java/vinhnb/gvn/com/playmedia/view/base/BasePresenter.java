@@ -19,6 +19,11 @@ public class BasePresenter implements BaseInteractor.Presenter {
     }
 
     @Override
+    public void savePositionMediaPlayingNow(int position) {
+        mISdcardModel.savePositionMedia(position);
+    }
+
+    @Override
     public List<FileEntity> getListMediaPlaying() {
         return mISdcardModel.getListMediaPlaying();
     }
@@ -28,10 +33,3 @@ public class BasePresenter implements BaseInteractor.Presenter {
     }
 }
 
-interface BaseInteractor {
-    interface Presenter {
-        int getPositionMediaPlayingNow();
-
-        List<FileEntity> getListMediaPlaying();
-    }
-}

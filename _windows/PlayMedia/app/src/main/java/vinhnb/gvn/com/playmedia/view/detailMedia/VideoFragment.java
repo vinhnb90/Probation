@@ -142,7 +142,9 @@ public class VideoFragment extends  Fragment implements VideoInteractor.View {
      * */
 
 
-    public interface CallbackDetailMediaVideoFragmentView extends ViewPageMediaInteractor {
+    public interface CallbackDetailMediaVideoFragmentView
+//            extends ViewPageMediaInteractor
+    {
         // TODO: Update argument type and name
     }
 

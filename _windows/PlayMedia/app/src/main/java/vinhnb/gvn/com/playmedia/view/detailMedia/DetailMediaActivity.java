@@ -3,6 +3,7 @@ package vinhnb.gvn.com.playmedia.view.detailMedia;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
@@ -11,6 +12,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import java.io.File;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -26,12 +29,13 @@ import vinhnb.gvn.com.playmedia.view.base.BaseActivity;
 import vinhnb.gvn.com.playmedia.view.base.BasePresenter;
 
 public class DetailMediaActivity extends BaseActivity implements
-        DetailMediaInteractor.View,
+//        DetailMediaInteractor.View,
         ImageFragment.CallbackDetailMediaImageFragmentView,
         VideoFragment.CallbackDetailMediaVideoFragmentView,
         AudioFragment.CallbackDetailMediaAudioFragmentView,
         ViewPageMediaAdapter.CallbackDetailMediaViewViewPageAdapter,
-        ViewPager.OnPageChangeListener {
+        ViewPager.OnPageChangeListener,
+        DetailMediaInteractor.View {
     /*
      * var
      * */
@@ -39,17 +43,20 @@ public class DetailMediaActivity extends BaseActivity implements
     @BindView(R.id.activity_detail_list_media_viewpage)
     ViewPager mViewPager;
 
+    private DetailMediaInteractor.Presenter mIPresenter;
     private Unbinder mUnbinder;
     private ViewPageMediaAdapter mViewPageMediaAdapter;
-    private DetailMediaInteractor.Presenter mIPresenter;
+    private int mPositionPlaying;
+    private List<FileEntity> mListMedia = new ArrayList<>();
 
     /*
      * instance
      * */
 
-    public static Intent createInstance(Context context, int positionPlaying) {
+    public static Intent createInstance(Context context, List<FileEntity> data, int positionPlaying) {
         Intent intent = new Intent(context, DetailMediaActivity.class);
         intent.putExtra(Utils.INTENT_CODE_DETAIL_MEDIA_POSITION_PLAY_NOW, positionPlaying);
+        intent.putParcelableArrayListExtra(Utils.INTENT_CODE_DETAIL_MEDIA_LIST, (ArrayList<? extends Parcelable>) data);
         return intent;
     }
 
@@ -99,7 +106,7 @@ public class DetailMediaActivity extends BaseActivity implements
     protected void onDestroy() {
         super.onDestroy();
         mUnbinder.unbind();
-        stopMedia();
+//        stopMedia();
     }
 
 
@@ -119,27 +126,28 @@ public class DetailMediaActivity extends BaseActivity implements
 
 
 //        get bundle
-        int positionPlaying = getIntent().getIntExtra(Utils.INTENT_CODE_DETAIL_MEDIA_POSITION_PLAY_NOW, 0);
+        mPositionPlaying = getIntent().getIntExtra(Utils.INTENT_CODE_DETAIL_MEDIA_POSITION_PLAY_NOW, 0);
+        mListMedia = getIntent().getParcelableArrayListExtra(Utils.INTENT_CODE_DETAIL_MEDIA_LIST);
 
 //        save position
-        mIPresenter.savePositionMedia(positionPlaying);
+//        mIPresenter.savePositionMedia(mPositionPlaying);
 
 //        viewpage
-        List<FileEntity> data = ((BasePresenter) mIPresenter).getListMediaPlaying();
-        int posItemPlaying = ((BasePresenter) mIPresenter).getPositionMediaPlayingNow();
-        mViewPageMediaAdapter = new ViewPageMediaAdapter(getSupportFragmentManager(), data, this);
+//        List<FileEntity> data = ((BasePresenter) mIPresenter).getListMediaPlaying();
+//        int posItemPlaying = ((BasePresenter) mIPresenter).getPositionMediaPlayingNow();
+        mViewPageMediaAdapter = new ViewPageMediaAdapter(getSupportFragmentManager(), mListMedia, this);
         mViewPager.addOnPageChangeListener(this);
-        mViewPager.setCurrentItem(posItemPlaying);
+        mViewPager.setCurrentItem(mPositionPlaying);
         mViewPager.setAdapter(mViewPageMediaAdapter);
 
 //        mViewPager.setPageTransformer(true, new ViewPageZoomOutPageTransformer());
     }
 
 
-    @Override
-    public FileEntity getItemMediaFilePreparePlay() {
-        return ((BasePresenter) mIPresenter).getItemMediaFilePreparePlay();
-    }
+//    @Override
+//    public FileEntity getItemMediaFilePreparePlay() {
+//        return ((BasePresenter) mIPresenter).getItemMediaFilePreparePlay();
+//    }
 
 //endregion
 
@@ -153,8 +161,10 @@ public class DetailMediaActivity extends BaseActivity implements
     @Override
     public void onPageSelected(int position) {
         pauseMedia();
+        mPositionPlaying = position;
 
-        mIPresenter.savePositionMedia(position);
+        //save
+        ((BasePresenter) mIPresenter).savePositionMediaPlayingNow(position);
     }
 
     @Override
@@ -164,11 +174,36 @@ public class DetailMediaActivity extends BaseActivity implements
 
     //endregion
 
+    private void stopMedia() {
+        //       getCurrent faragment
+//        Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.activity_detail_list_media_viewpage + ":" + mViewPager.getCurrentItem());
+//        if (mViewPager.getCurrentItem() == 0 && page != null) {
+        //check
+        Fragment fragment = ((ViewPageMediaAdapter) mViewPager.getAdapter()).getItem(this.mPositionPlaying);
+        FileEntity fileEntity = mListMedia.get(this.mPositionPlaying);
+
+//        FileEntity fileEntity = getItemMediaFilePreparePlay();
+        if (fileEntity instanceof ImageEntity) {
+            //nothing
+        }
+
+        if (fileEntity instanceof AudioEntity) {
+            ((AudioFragment) fragment).onStopMedia();
+        }
+
+        if (fileEntity instanceof VideoEntity) {
+            ((VideoFragment) fragment).onStopMedia();
+        }
+//        }
+
+    }
+
     private void pauseMedia() {
         //check
-        Fragment fragment = ((ViewPageMediaAdapter) mViewPager.getAdapter()).getRegisteredFragment(((BasePresenter) mIPresenter).getPositionMediaPlayingNow());
+//        Fragment fragment = ((ViewPageMediaAdapter) mViewPager.getAdapter()).getRegisteredFragment(((BasePresenter) mIPresenter).getPositionMediaPlayingNow());
 
-        FileEntity fileEntity = getItemMediaFilePreparePlay();
+        Fragment fragment = ((ViewPageMediaAdapter) mViewPager.getAdapter()).getItem(this.mPositionPlaying);
+        FileEntity fileEntity = mListMedia.get(this.mPositionPlaying);
         if (fileEntity instanceof ImageEntity) {
             //nothing
         }
@@ -180,26 +215,5 @@ public class DetailMediaActivity extends BaseActivity implements
         if (fileEntity instanceof VideoEntity) {
             ((VideoFragment) fragment).onPauseMedia();
         }
-    }
-
-    private void stopMedia() {
-        //       getCurrent faragment
-        Fragment page = getSupportFragmentManager().findFragmentByTag("android:switcher:" + R.id.activity_detail_list_media_viewpage + ":" + mViewPager.getCurrentItem());
-        if (mViewPager.getCurrentItem() == 0 && page != null) {
-            //check
-            FileEntity fileEntity = getItemMediaFilePreparePlay();
-            if (fileEntity instanceof ImageEntity) {
-                //nothing
-            }
-
-            if (fileEntity instanceof AudioEntity) {
-                ((AudioFragment) page).onStopMedia();
-            }
-
-            if (fileEntity instanceof VideoEntity) {
-                ((VideoFragment) page).onStopMedia();
-            }
-        }
-
     }
 }

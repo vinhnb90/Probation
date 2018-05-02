@@ -1,11 +1,12 @@
 package vinhnb.gvn.com.playmedia.model.entities;
 
 import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.IntRange;
 
 import java.io.File;
 
-public class VideoEntity extends FileEntity {
+public class VideoEntity extends FileEntity{
     private long positionTimePlay = 0;
     private String mNameMedia;
     private int mWidth;
@@ -17,6 +18,25 @@ public class VideoEntity extends FileEntity {
         this.mWidth = mWidth;
         this.mHeight = mHeight;
     }
+
+    protected VideoEntity(Parcel in) {
+        positionTimePlay = in.readLong();
+        mNameMedia = in.readString();
+        mWidth = in.readInt();
+        mHeight = in.readInt();
+    }
+
+    public static final Creator<VideoEntity> CREATOR = new Creator<VideoEntity>() {
+        @Override
+        public VideoEntity createFromParcel(Parcel in) {
+            return new VideoEntity(in);
+        }
+
+        @Override
+        public VideoEntity[] newArray(int size) {
+            return new VideoEntity[size];
+        }
+    };
 
     public long getPositionTimePlay() {
         return positionTimePlay;
@@ -58,4 +78,16 @@ public class VideoEntity extends FileEntity {
         this.mHeight = mHeight;
     }
 
+    @Override
+    public int describeContents() {
+        return this.hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(positionTimePlay);
+        dest.writeString(mNameMedia);
+        dest.writeInt(mWidth);
+        dest.writeInt(mHeight);
+    }
 }

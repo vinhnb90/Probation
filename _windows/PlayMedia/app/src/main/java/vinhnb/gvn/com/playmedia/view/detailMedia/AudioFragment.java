@@ -1,7 +1,10 @@
 package vinhnb.gvn.com.playmedia.view.detailMedia;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
+import android.media.ThumbnailUtils;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -9,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -39,6 +43,9 @@ public class AudioFragment extends Fragment implements AudioInteractor.View {
 
     @BindView(R.id.fragment_detail_media_audio_sbar_process)
     SeekBar sbarProcess;
+
+    @BindView(R.id.fragment_detail_media_audio_iv_thumb)
+    ImageView ivThumb;
 
     @BindView(R.id.fragment_detail_media_audio_ib_playing)
     ImageButton ibtnPlaying;
@@ -80,20 +87,16 @@ public class AudioFragment extends Fragment implements AudioInteractor.View {
         View view = inflater.inflate(R.layout.fragment_detail_media_audio, container, false);
         ButterKnife.bind(this, view);
 
-
         initComponentIfNeed();
 
-//        if (pos != ((BasePresenter) mIPresenter).getPositionMediaPlayingNow())
-//            return null;
-
-//        FileEntity fileEntity = mCallback.getItemMediaFilePreparePlay();
         FileEntity fileEntity = ((BasePresenter) mIPresenter).getListMediaPlaying().get(mPos);
         File file = fileEntity.getmFile();
         if (!file.exists())
             Toast.makeText(getContext(), "File not found in sdcard!", Toast.LENGTH_SHORT).show();
 
-        mIPresenter.playAudioMedia((AudioEntity) fileEntity);
+        ivThumb.setImageBitmap(((AudioEntity) fileEntity).getmThumb());
 
+        mIPresenter.playAudioMedia((AudioEntity) fileEntity);
 
         return view;
     }
@@ -101,7 +104,9 @@ public class AudioFragment extends Fragment implements AudioInteractor.View {
     private void initComponentIfNeed() {
         // Changing Button Image to pause image
         ibtnPlaying.setImageResource(R.drawable.btn_pause);
+        ivThumb.setImageDrawable(getContext().getResources().getDrawable(R.drawable.ic_audio));
 
+//        Bitmap resized = ThumbnailUtils.extractThumbnail(BitmapFactory.decodeFile(file.getPath()), width, height);
         // set Progress bar values
         sbarProcess.setProgress(0);
         sbarProcess.setMax(100);
@@ -131,18 +136,15 @@ public class AudioFragment extends Fragment implements AudioInteractor.View {
             ibtnPlaying.setImageResource(R.drawable.btn_play);
             mIPresenter.pauseAudioMedia();
         } else {
-            FileEntity fileEntity = mCallback.getItemMediaFilePreparePlay();
+            FileEntity fileEntity = ((BasePresenter) mIPresenter).getListMediaPlaying().get(mPos);
             ibtnPlaying.setImageResource(R.drawable.btn_pause);
             mIPresenter.resumeAudioMedia(((AudioEntity) fileEntity));
         }
-
     }
-
 
     @Override
     public void setAudioName(String name) {
         tvAudioName.setText(name);
-
     }
 
     @Override
@@ -153,7 +155,6 @@ public class AudioFragment extends Fragment implements AudioInteractor.View {
     @Override
     public void setOnSeekBarChangeListener(AudioPresenter audioPresenter) {
         sbarProcess.setOnSeekBarChangeListener(audioPresenter);
-
     }
 
     @Override
@@ -174,7 +175,6 @@ public class AudioFragment extends Fragment implements AudioInteractor.View {
 
     public void onPauseMedia() {
         mIPresenter.pauseAudioMedia();
-
     }
 
     public void onStopMedia() {
@@ -186,7 +186,9 @@ public class AudioFragment extends Fragment implements AudioInteractor.View {
 
     }
 
-    public interface CallbackDetailMediaAudioFragmentView extends ViewPageMediaInteractor {
+    public interface CallbackDetailMediaAudioFragmentView
+//            extends ViewPageMediaInteractor
+    {
         // TODO: Update argument type and name
     }
 

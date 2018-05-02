@@ -154,8 +154,9 @@ public class ListMediaActivity extends BaseActivity implements ListMediaInteract
             @Override
             public void doClickRow(FileEntity fileEntity, int position) {
                 mIListMediaPresenter.saveListMedia(data);
+                mIListMediaPresenter.savePositionMedia(position);
 
-                Intent intent = DetailMediaActivity.createInstance(ListMediaActivity.this, position);
+                Intent intent = DetailMediaActivity.createInstance(ListMediaActivity.this, data, position);
                 startActivityForResult(intent, REQUEST_CODE_DETAIL_MEDIA);
             }
         }));

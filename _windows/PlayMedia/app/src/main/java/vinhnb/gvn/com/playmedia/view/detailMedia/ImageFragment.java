@@ -89,11 +89,10 @@ public class ImageFragment extends Fragment implements ImageInteractor.View{
         mListener = null;
     }
 
-    public void onPageSelected() {
 
-    }
-
-    public interface CallbackDetailMediaImageFragmentView extends ViewPageMediaInteractor {
+    public interface CallbackDetailMediaImageFragmentView
+//            extends ViewPageMediaInteractor
+    {
         // TODO: Update argument type and name
     }
 }

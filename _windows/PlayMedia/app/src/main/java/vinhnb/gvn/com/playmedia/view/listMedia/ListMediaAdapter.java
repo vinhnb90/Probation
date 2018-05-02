@@ -17,8 +17,7 @@ import vinhnb.gvn.com.playmedia.model.entities.AudioEntity;
 import vinhnb.gvn.com.playmedia.model.entities.FileEntity;
 import vinhnb.gvn.com.playmedia.model.entities.ImageEntity;
 import vinhnb.gvn.com.playmedia.model.entities.VideoEntity;
-import vinhnb.gvn.com.playmedia.util.MediaPlayAppUtils;
-import vinhnb.gvn.com.playmedia.util.Utils;
+import vinhnb.gvn.com.playmedia.util.AppUtils;
 
 public class ListMediaAdapter extends RecyclerView.Adapter<ListMediaAdapter.MediaFileViewHolder> {
     private static List<FileEntity> mListData = new ArrayList<>();
@@ -34,10 +33,10 @@ public class ListMediaAdapter extends RecyclerView.Adapter<ListMediaAdapter.Medi
         this.mContext = mContext;
         this.mCallback = mCallback;
 
-        mIconImage = MediaPlayAppUtils.getContext().getResources().getDrawable(R.drawable.ic_image);
-        mIconVideo = MediaPlayAppUtils.getContext().getResources().getDrawable(R.drawable.ic_video);
-        mIconAudio = MediaPlayAppUtils.getContext().getResources().getDrawable(R.drawable.ic_audio);
-        mIconFolder = MediaPlayAppUtils.getContext().getResources().getDrawable(R.drawable.ic_folder);
+        mIconImage = AppUtils.getContext().getResources().getDrawable(R.drawable.ic_image);
+        mIconVideo = AppUtils.getContext().getResources().getDrawable(R.drawable.ic_video);
+        mIconAudio = AppUtils.getContext().getResources().getDrawable(R.drawable.ic_audio);
+        mIconFolder = AppUtils.getContext().getResources().getDrawable(R.drawable.ic_folder);
     }
 
     @NonNull

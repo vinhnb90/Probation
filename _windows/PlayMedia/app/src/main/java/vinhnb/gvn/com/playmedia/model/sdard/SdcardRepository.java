@@ -6,8 +6,6 @@ import android.provider.MediaStore;
 import android.support.annotation.IntRange;
 import android.util.Log;
 
-import org.w3c.dom.Entity;
-
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -18,7 +16,7 @@ import vinhnb.gvn.com.playmedia.model.entities.AudioEntity;
 import vinhnb.gvn.com.playmedia.model.entities.FileEntity;
 import vinhnb.gvn.com.playmedia.model.entities.MediaFile;
 import vinhnb.gvn.com.playmedia.model.entities.VideoEntity;
-import vinhnb.gvn.com.playmedia.util.MediaPlayAppUtils;
+import vinhnb.gvn.com.playmedia.util.AppUtils;
 import vinhnb.gvn.com.playmedia.util.Utils;
 
 public class SdcardRepository implements IDataManager {
@@ -48,7 +46,7 @@ public class SdcardRepository implements IDataManager {
         //get contentReslover of Uri external
         String[] directories = null;
         if (u != null) {
-            c = MediaPlayAppUtils.getContext().getContentResolver().query(u, projection, null, null, null);
+            c = AppUtils.getContext().getContentResolver().query(u, projection, null, null, null);
         }
 
         if ((c != null) && (c.moveToFirst())) {
