@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">PlayMedia</string>
+    <string name="list_media">List Media</string>
+    <string name="detail_media">Detail Media</string>
+    <string name="name_company">Công ty cổ phần công nghệ GVN</string>
+    <string name="activity_list_media_row_title_file">Two-line item</string>
+    <string name="activity_list_media_row_content_file">Secondary text</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>

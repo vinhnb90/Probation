@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/activity_list_media_row"
+    android:paddingLeft="@dimen/_16sdp"
+    android:paddingRight="@dimen/_16sdp">
+
+    <ImageView
+        android:id="@+id/activity_list_media_row_iv_file"
+        android:layout_width="@dimen/_48sdp"
+        android:layout_height="@dimen/_48sdp"
+        android:layout_marginRight="@dimen/_16sdp"
+        android:background="@drawable/bg_circle"
+        android:padding="@dimen/_8sdp"
+        android:src="@drawable/ic_folder"></ImageView>
+
+
+    <TextView
+        android:id="@+id/activity_list_media_row_tv_title_file"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_24sdp"
+        android:layout_toRightOf="@+id/activity_list_media_row_iv_file"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:textSize="@dimen/_14sdp"
+        android:textStyle="bold"
+        tools:text="@string/activity_list_media_row_title_file" />
+
+    <TextView
+        android:id="@+id/activity_list_media_row_tv_content_file"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_24sdp"
+        android:layout_below="@+id/activity_list_media_row_tv_title_file"
+        android:layout_toRightOf="@+id/activity_list_media_row_iv_file"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:textSize="@dimen/_12sdp"
+        tools:text="@string/activity_list_media_row_content_file" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_1sdp"
+        android:layout_below="@+id/activity_list_media_row_tv_content_file"
+        android:layout_marginBottom="@dimen/_8sdp"
+        android:layout_marginTop="@dimen/_8sdp"
+        android:layout_toRightOf="@+id/activity_list_media_row_iv_file"
+        android:background="@color/colorLightAccent" />
+
+</RelativeLayout>
